@@ -191,6 +191,64 @@
     </span>
 
 </div>
+              
+<!-- Part 4-->
+    <tr>
+        <th colspan="2" style="text-align:left;">Part 4:</th>
+    </tr>
+<table border="3" cellpadding="5" cellspacing="0">
+  <form action="https://translate.google.com" method="get">
+
+    <!-- Group 1: Name, Module Code, Current Date -->
+    <tr>
+        <td colspan="2">
+            Name: <input type="text" id="name" name="name" onchange="Name()"required><br><br>
+            <span id="nameError"></span>
+            Module Code: <input type="text" id="module" name="moduleCode" onchange="ModuleText()" required><br><br>
+             <span id="moduleError"></span>
+            Current Date: <input type="text" name="currentDate" id="currentDate" disabled="">
+        </td>
+    </tr>
+
+    <!-- Group 2: Message, Find, Replace, Button -->
+    <tr>
+        <td colspan="2">
+            Message:<br>
+            <textarea id="message" rows="3" cols="25">Hello 202509</textarea><br><br>
+            <span id="messageError"></span>
+            Find: <input type="text" id="find" name="find" onchange="findbox()"><br><br>
+            Replace: <input type="text" id="replace" name="replace"><br><br>
+            <input type="button" name="Find & Replace" id="far" value="Find and Replace" onclick="findReplace()">
+        </td>
+    </tr>
+
+    <!-- Group 3: Language selection and buttons -->
+    <tr>
+      <td colspan="2">
+           Source Language:
+              <select id="souceLang" name="s1"><br><br>
+                <option value="en">English</option>
+                <option value="ms">Malay</option>
+    </tr>
+    <tr>
+      <td colspan="2">      
+           Target Language:
+              <input type="radio" id="Chinese" name="t1" value="zh-CN" checked> Chinese
+              <input type="radio" id="Japanese" name="t1" value="ia" checked> Japanese
+              <input type="radio" id="Korean" name="t1" value="ko"> Korean<br><br>
+            </select><br><br>
+            <input type="submit" value="Translate">
+            <input type="reset" value="Reset" id="reset">
+        </td>
+    </tr>
+    </form>
+</table>
+
+<script>
+  
+</script>
+</body>
+</html>
 
 
 
