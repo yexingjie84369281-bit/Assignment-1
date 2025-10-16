@@ -234,22 +234,196 @@
       <td colspan="2">      
            Target Language:
               <input type="radio" id="Chinese" name="t1" value="zh-CN" checked> Chinese
-              <input type="radio" id="Japanese" name="t1" value="ja"> Japanese
+              <input type="radio" id="Japanese" name="t1" value="ia" checked> Japanese
               <input type="radio" id="Korean" name="t1" value="ko"> Korean<br><br>
             </select><br><br>
             <input type="submit" value="Translate">
             <input type="reset" value="Reset" id="reset">
         </td>
     </tr>
+
+    <!-- Part 4: Form with Validation -->
+    <h2>Part 4: Translation Form</h2>
+    
+    <form id="translationForm">
+        <table class="form-table">
+            <tr>
+                <td><label for="name">Name:</label></td>
+                <td>
+                    <input type="text" id="name" name="name">
+                    <span id="nameError" class="error-message"></span>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="moduleCode">Module code:</label></td>
+                <td>
+                    <input type="text" id="moduleCode" name="moduleCode">
+                    <span id="moduleCodeError" class="error-message"></span>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="currentDate">Current date:</label></td>
+                <td>
+                    <input type="text" id="currentDate" name="currentDate" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="message">Message:</label></td>
+                <td>
+                    <textarea id="message" name="message" rows="3" cols="20">Hello 202509</textarea>
+                    <span id="messageError" class="error-message"></span>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="find">Find:</label></td>
+                <td>
+                    <input type="text" id="find" name="find">
+                </td>
+            </tr>
+            <tr>
+                <td><label for="replace">Replace:</label></td>
+                <td>
+                    <input type="text" id="replace" name="replace" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="button" id="findReplaceBtn">Find and Replace</button>
+                    <span id="replaceResult" class="success-message"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>Source language:</td>
+                <td>
+                    <input type="radio" id="english" name="sourceLanguage" value="en" checked>
+                    <label for="english">English</label>
+                    <input type="radio" id="malay" name="sourceLanguage" value="ms">
+                    <label for="malay">Malay</label>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="targetLanguage">Target language:</label></td>
+                <td>
+                    <select id="targetLanguage" name="targetLanguage">
+                        <option value="zh">Chinese</option>
+                        <option value="ja">Japanese</option>
+                        <option value="ko">Korean</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
     </form>
 </table>
 
 <script>
-  
+function Name()
+{
+  var name = document.getElementById("name").value;
+
+    if (name.trim() === '') {
+        document.getElementById("nameError").innerHTML = 'Name cannot be empty';
+        return false;
+    } else if (/[^a-zA-Z\s]/.test(name)) {
+        document.getElementById("nameError").innerHTML = 'Name cannot contain numbers or special characters';
+        return false;
+    } else {
+        document.getElementById("nameError").innerHTML = '';
+        return true;
+    }
+
+}
+
+function ModuleText ()
+{
+    var module = document.getElementById("moduleCode").value;
+
+    if (moduleCode.trim() === '') {
+        document.getElementById("moduleError").innerHTHL = '';
+        return true;
+    }
+    else if (module.match(/^[A-Z]{2}[4-8]{3}$/))
+    {   document.getElementById("moduleError").innerHTML = 'Module code must be 2 uppercase letters followed by 3 digits (4-8)';
+        return false;
+    } 
+    else {
+        document.getElementById("moduleError").innerHTML = ""
+        return true;
+    }
+}
+
+function updateCurrentDate() {
+            const now = new Date();
+            const options = { 
+                day: 'numeric', 
+                month: 'long', 
+                year: 'numeric', 
+                weekday: 'long',
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true
+            };
+            document.getElementById('currentDate').value = now.toLocaleDateString('en-US', options);
+        }
+    
+function MessageText()
+{
+    var message = document.getElementById("message").value;
+
+    if (message.trim() === '') {
+    
+        document.getElementById("messageError").innerHTML = 'Message cannot be empty';
+        return false;
+    } else {
+        document.getElementById("messageError").innerHTML  = '';
+        return true;
+    }
+}
+
+ function findreplaceField ()
+    {
+        const findValue = document.getElementById('find').value;
+            const replaceField = document.getElementById('replace');
+            
+            if (findValue.trim() === '') {
+                replaceField.disabled = true;
+                replaceField.value = '';
+            } else {
+                replaceField.disabled = false;
+            }
+    }
+
+function findAndReplace ()
+    {
+        var find = document.getElementById("find").value;
+        var replaceText = document.getElementById("replace").value;
+        var messageAreaText = document.getElementById("message").value;
+        var count= 0;
+        let message = messageField.value;
+
+        if (findText.trim() === '') {
+            document.getElementById('replaceResult').textContent = 'Please enter text to find';
+            return;
+        }
+        const regex = new RegExp(findText, 'g');
+        const newMessage = message.replace(regex, replaceText);
+        const replacements = (message.match(regex) || []).length;
+        messageField.value = newMessage;
+        document.getElementById('replaceResult').textContent = `${replacements} replacement(s) made`;
+    }
+
+function resetForm() {
+            document.getElementById('translationForm').reset();
+            document.getElementById('currentDate').value = '';
+            updateCurrentDate();
+}
+
+
+</script>
+<form action="myService" method="get"
+onSubmit="return validateForm()">
+Enter some text with pattern
+<input id="t1" type="text" name="t1" required>
 </script>
 </body>
 </html>
-
-
-
-
