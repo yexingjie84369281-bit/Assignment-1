@@ -192,121 +192,200 @@
 
 </div>
               
-<!-- Part 4: Translation and Find & Replace Form -->
-<h2>Part 4: Translation Form</h2>
+<h1>Part 4: Form</h1>
 
-<form name="translateForm" onsubmit="return translateMessage();">
-<table border="3" cellpadding="5" cellspacing="0">
-  <tr>
-    <td>Name:</td>
-    <td><input type="text" id="name" required pattern="[A-Za-z ]+" ></td>
-  </tr>
+<table border="1" cellpadding="5" cellspacing="0" style="text-align:left;">
+<form action="https://translate.google.com" method="get">
 
-  <tr>
-    <td>Module Code:</td>
-    <td><input type="text" id="module" pattern="[A-Z]{2}[4-8]{3}" ></td>
-  </tr>
+    <!-- Name -->
+    <tr>
+        <td>Name:</td>
+        <td>
+            <input type="text" id="name" name="name" onchange="checkName()" required>
+            <br><span id="nameError" style="color:red;"></span>
+        </td>
+    </tr>
 
-  <tr>
-    <td>Current Date:</td>
-    <td><input type="text" id="date" readonly></td>
-  </tr>
+    <!-- Module Code -->
+    <tr>
+        <td>Module Code:</td>
+        <td>
+            <input type="text" id="moduleCode" name="moduleCode" onchange="checkModuleCode()">
+            <br><span id="moduleError" style="color:red;"></span>
+        </td>
+    </tr>
 
-  <tr>
-    <td>Message:</td>
-    <td><textarea id="message" rows="3" cols="20" required>Hello 202509</textarea></td>
-  </tr>
+    <!-- Current Date -->
+    <tr>
+        <td>Current Date:</td>
+        <td>
+            <input type="text" id="date" name="date" disabled>
+        </td>
+    </tr>
 
-  <tr>
-    <td>Find:</td>
-    <td><input type="text" id="find" onkeyup="enableReplace()"></td>
-  </tr>
+    <!-- Message -->
+    <tr>
+        <td>Message:</td>
+        <td>
+            <textarea id="message" name="text" rows="3" cols="20" onkeyup="checkMessage()" required>Hello 202509</textarea>
+            <br><span id="messageError" style="color:red;"></span>
+        </td>
+    </tr>
 
-  <tr>
-    <td>Replace:</td>
-    <td><input type="text" id="replace" disabled></td>
-  </tr>
+    <!-- Find -->
+    <tr>
+        <td>Find:</td>
+        <td>
+            <input type="text" id="find" name="find" onchange="enableReplace()">
+        </td>
+    </tr>
 
-  <tr>
-    <td colspan="2">
-      <button type="button" onclick="findReplace()">Find & Replace</button>
-      <span id="countMsg"></span>
-    </td>
-  </tr>
+    <!-- Replace -->
+    <tr>
+        <td>Replace:</td>
+        <td>
+            <input type="text" id="replace" name="replace" disabled>
+        </td>
+    </tr>
 
-  <tr>
-    <td>Source Language:</td>
-    <td>
-      <input type="radio" name="source" value="en" checked> English
-      <input type="radio" name="source" value="ms"> Malay
-    </td>
-  </tr>
+    <!-- Find and Replace Button -->
+    <tr>
+        <td colspan="2" align="center">
+            <input type="button" id="far" value="Find and Replace" onclick="findAndReplace()" disabled>
+            <span id="replaceMsg" style="margin-left:10px; color:blue;"></span>
+        </td>
+    </tr>
 
-  <tr>
-    <td>Target Language:</td>
-    <td>
-      <select id="target">
-        <option value="zh-CN">Chinese</option>
-        <option value="ja">Japanese</option>
-        <option value="ko">Korean</option>
-      </select>
-    </td>
-  </tr>
+    <!-- Source Language -->
+    <tr>
+        <td>Source Language:</td>
+        <td>
+            <input type="radio" id="English" name="sl" value="en" checked>English
+            <input type="radio" id="Malay" name="sl" value="ms">Malay
+        </td>
+    </tr>
 
-  <tr>
-    <td colspan="2" align="center">
-      <input type="submit" value="Translate">
-      <input type="reset" value="Reset">
-    </td>
-  </tr>
-</table>
+    <!-- Target Language -->
+    <tr>
+        <td>Target Language:</td>
+        <td>
+            <select id="targetLanguage" name="tl">
+                <option value="zh-CN" selected>Chinese</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+            </select>
+        </td>
+    </tr>
+
+    <!-- Buttons -->
+    <tr>
+        <td colspan="2" align="center">
+            <input type="submit" value="Translate">
+            <input type="reset" value="Reset" id="reset">
+        </td>
+    </tr>
+
 </form>
+</table>
 
 <script>
-function showDate(){
-  var today = new Date();
-  var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-                  hour: 'numeric', minute: '2-digit', hour12: true };
-  document.getElementById("date").value = today.toLocaleString('en-GB', options);
+// Name validation: no number or special characters
+function checkName() {
+    var name = document.getElementById("name").value;
+    if (name.trim() === "") {
+        document.getElementById("nameError").innerHTML = "Please fill up the name field";
+    } else if (!/^[A-Za-z ]+$/.test(name)) {
+        document.getElementById("nameError").innerHTML = "Invaild name";
+    } else {
+        document.getElementById("nameError").innerHTML = "";
+    }
 }
-showDate();
 
-function enableReplace(){
-  var findText = document.getElementById("find").value;
-  if(findText == ""){
+// Module Code validation: 2 uppercase + 3 digits (4–8), can be empty
+function checkModuleCode() {
+    var code = document.getElementById("moduleCode").value;
+    if (code === "") {
+        document.getElementById("moduleError").innerHTML = "";
+    } else if (!/^[A-Z]{2}[4-8]{3}$/.test(code)) {
+        document.getElementById("moduleError").innerHTML = "Must be 2 uppercase letters followed by 3 digits (4–8)";
+    } else {
+        document.getElementById("moduleError").innerHTML = "";
+    }
+}
+
+// Display current date in specified format
+function currentDate() {
+    var date = new Date();
+    var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    var weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+    var day = date.getDate();
+    var month = months[date.getMonth()];
+    var year = date.getFullYear();
+    var weekday = weekdays[date.getDay()];
+
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+
+    var formattedDate = day + " " + month + " " + year + " " + weekday + " " + hours + ":" + minutes + " " + ampm;
+    document.getElementById("date").value = formattedDate;
+}
+currentDate();
+
+// Message validation
+function checkMessage() {
+    var msg = document.getElementById("message").value;
+    if (msg.trim() === "") {
+        document.getElementById("messageError").innerHTML = "Message cannot be empty";
+    } else {
+        document.getElementById("messageError").innerHTML = "";
+    }
+}
+
+// Enable/disable Replace box and button
+function enableReplace() {
+    var find = document.getElementById("find").value;
+    if (find.trim() === "") {
+        document.getElementById("replace").disabled = true;
+        document.getElementById("far").disabled = true;
+    } else {
+        document.getElementById("replace").disabled = false;
+        document.getElementById("far").disabled = false;
+    }
+}
+
+// Find and Replace function
+function findAndReplace() {
+    var findText = document.getElementById("find").value;
+    var replaceText = document.getElementById("replace").value;
+    var message = document.getElementById("message").value;
+    var count = 0;
+
+    message = message.replace(new RegExp(findText, 'g'), function() {
+        count++;
+        return replaceText;
+    });
+
+    document.getElementById("message").value = message;
+    document.getElementById("replaceMsg").innerHTML = count + " replacement(s) made";
+}
+
+// Reset button restores defaults
+document.getElementById("reset").onclick = function() {
     document.getElementById("replace").disabled = true;
-  }else{
-    document.getElementById("replace").disabled = false;
-  }
-}
-
-function findReplace(){
-  var find = document.getElementById("find").value;
-  var rep = document.getElementById("replace").value;
-  var msg = document.getElementById("message").value;
-
-  if(find == ""){
-    alert("Please enter text to find!");
-    return;
-  }
-
-  var count = (msg.split(find).length - 1);
-  msg = msg.split(find).join(rep);
-  document.getElementById("message").value = msg;
-
-  document.getElementById("countMsg").innerHTML = count + " replacement(s) made.";
-}
-
-function translateMessage(){
-  var text = document.getElementById("message").value;
-  var src = document.querySelector('input[name="source"]:checked').value;
-  var tgt = document.getElementById("target").value;
-  var url = "https://translate.google.com/?sl=" + src + "&tl=" + tgt + "&text=" + encodeURIComponent(text);
-  window.open(url, "_blank");
-  return false;
-}
+    document.getElementById("far").disabled = true;
+    document.getElementById("replaceMsg").innerHTML = "";
+    document.getElementById("nameError").innerHTML = "";
+    document.getElementById("moduleError").innerHTML = "";
+    document.getElementById("messageError").innerHTML = "";
+    currentDate();
+};
 </script>
-</form>
+
 </body>
 </html>
 
