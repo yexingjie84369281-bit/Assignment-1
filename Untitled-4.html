@@ -4,14 +4,13 @@
 </head>
       <body>
 <!-- Part 1: Assignment 1 group member information -->
+ <h1>Part 1 </h1>
 <table border="1" width="100%" cellpadding="10">
 
   <tr>
 
-    </td>
     <td colspan="3" bgcolor="lightblue" align="center"><b>CSIT128: Assignment 1</b></td>
     <td colspan="3" bgcolor="lightblue" align="center"><b>Group G2T02</b></td>
-  </tr>
   </tr>
      <td rowspan="4">
       Student Number / <br>
@@ -29,12 +28,11 @@
     <td>Xia Yanxin</td>
     <td>sfms.sas.02@gmail.com</td>
   </tr>
-</div>
       
 </table>
             
 <!-- Part 2: Hyperlinks with pictures -->
-<h2>Programming Languages</h2>
+<h1>Part 2:Programming language </h1>
 <p>
       <li><a href="#cpp">C++<br></a></li>
       <li><a href="#cs">C#<br></a></li>
@@ -198,14 +196,13 @@
 <form action="https://translate.google.com" method="get">
 
     <!-- Name -->
-    <tr>
+     <tr>
         <td>Name:</td>
         <td>
             <input type="text" id="name" name="name" onchange="checkName()" required>
             <br><span id="nameError" style="color:red;"></span>
         </td>
     </tr>
-
     <!-- Module Code -->
     <tr>
         <td>Module Code:</td>
@@ -214,7 +211,6 @@
             <br><span id="moduleError" style="color:red;"></span>
         </td>
     </tr>
-
     <!-- Current Date -->
     <tr>
         <td>Current Date:</td>
@@ -295,7 +291,7 @@ function checkName() {
     if (name.trim() === "") {
         document.getElementById("nameError").innerHTML = "Please fill up the name field";
     } else if (!/^[A-Za-z ]+$/.test(name)) {
-        document.getElementById("nameError").innerHTML = "Invaild name";
+        document.getElementById("nameError").innerHTML = "Please enter English name";
     } else {
         document.getElementById("nameError").innerHTML = "";
     }
